@@ -19,6 +19,7 @@ export const ACTIVITY_MESSAGES = {
   DELETED: 'Activity deleted successfully',
   NOT_FOUND: 'Activity not found.',
   NOT_AUTHORIZED_TO_MODIFY: 'You can only modify your own activities.',
+  INTERNAL_SERVER_ERROR: 'Something went wrong. Please try again later.',
 };
 
 export const USER_MESSAGES = {
