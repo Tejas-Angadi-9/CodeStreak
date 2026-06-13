@@ -2,6 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -32,8 +33,9 @@ class JwtGuard implements CanActivate {
       });
       request['user'] = payload;
       return true;
-    } catch {
-      throw new UnauthorizedException(AUTH_MESSAGES.UNAUTHORIZED);
+    } catch (error) {
+      if (error instanceof UnauthorizedException) throw error;
+      throw new InternalServerErrorException('Failed to verify token');
     }
   }
 }
