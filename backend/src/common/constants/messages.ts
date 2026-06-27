@@ -8,19 +8,19 @@ export const AUTH_MESSAGES = {
 export const ROOM_MESSAGES = {
   CREATED: 'Room created successfully',
   JOINED: 'Joined room successfully',
-  NOT_FOUND: 'Room not found. Check the code and try again.',
-  FULL: 'This room is full. Maximum 2 members allowed.',
-  ALREADY_MEMBER: 'You are already a member of this room.',
+  NOT_FOUND: 'Room not found Check the code and try again',
+  FULL: 'This room is full Maximum 2 members allowed',
+  ALREADY_MEMBER: 'You are already a member of this room',
 };
 
 export const ACTIVITY_MESSAGES = {
   CREATED: 'Activity logged successfully',
   UPDATED: 'Activity updated successfully',
   DELETED: 'Activity deleted successfully',
-  NOT_FOUND: 'Activity not found.',
-  NOT_AUTHORIZED_TO_MODIFY: 'You can only modify your own activities.',
-  EDIT_WINDOW_EXPIRED: 'You can only edit activities from today or yesterday.',
-  INTERNAL_SERVER_ERROR: 'Something went wrong. Please try again later.',
+  NOT_FOUND: 'Activity not found',
+  NOT_AUTHORIZED_TO_MODIFY: 'You can only modify your own activities',
+  EDIT_WINDOW_EXPIRED: 'You can only edit activities from today or yesterday',
+  INTERNAL_SERVER_ERROR: 'Something went wrong Please try again later',
 };
 
 export const USER_MESSAGES = {
