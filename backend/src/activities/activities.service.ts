@@ -21,18 +21,18 @@ export class ActivitiesService {
 
   private async updateStreak(activityDate: string, user: UserDocument): Promise<void> {
     const { lastActivityDate, graceExpiresAt } = user;
-    const newActivityTime = new Date(activityDate).getTime();
-    const lastActivityTime = new Date(lastActivityDate ?? '').getTime();
+    const newActivityTime: number = new Date(activityDate).getTime();
+    const lastActivityTime: number = new Date(lastActivityDate ?? '').getTime();
 
-    const diffDays = Math.round(
+    const diffDays: number = Math.round(
       Math.abs(lastActivityTime - newActivityTime) / MILLISECONDS_PER_DAY,
     );
-    const graceExpiresAtTime = new Date(graceExpiresAt ?? '').getTime();
+    const graceExpiresAtTime: number = new Date(graceExpiresAt ?? '').getTime();
 
     if (newActivityTime <= lastActivityTime) return;
 
-    const isYesterday = diffDays == 1;
-    const isWithinGraceTime =
+    const isYesterday: boolean = diffDays == 1;
+    const isWithinGraceTime: boolean =
       diffDays == 2 && user.streakAtRisk && newActivityTime <= graceExpiresAtTime;
 
     let newStreak: number = user.currentStreak;
@@ -46,6 +46,18 @@ export class ActivitiesService {
     user.lastActivityDate = activityDate;
     await user.save();
     return;
+  }
+
+  private canEditActivity(activityDate: string): boolean {
+    const currentTime: number = new Date().getTime();
+    const activityTime: number = new Date(activityDate).getTime();
+
+    const diffDays: number = Math.round(
+      Math.abs(currentTime - activityTime) / MILLISECONDS_PER_DAY,
+    );
+
+    const isWithinEditWindow: boolean = diffDays == 1 || diffDays == 0;
+    return isWithinEditWindow;
   }
 
   async getActivities(userId: string, query: GetActivitiesDto): Promise<ActivityDocument[]> {
@@ -103,6 +115,10 @@ export class ActivitiesService {
       if (activity.createdBy.toString() !== userId)
         throw new ForbiddenException(ACTIVITY_MESSAGES.NOT_AUTHORIZED_TO_MODIFY);
 
+      const { activityDate } = activityDto;
+      const isWithinEditWindow: boolean = this.canEditActivity(activityDate);
+      if (!isWithinEditWindow) throw new ForbiddenException(ACTIVITY_MESSAGES.EDIT_WINDOW_EXPIRED);
+
       const updatedActivity: ActivityDocument | null = await this.activityModel.findByIdAndUpdate(
         activityId,
         activityDto,
@@ -110,10 +126,10 @@ export class ActivitiesService {
       );
 
       if (!updatedActivity) throw new NotFoundException(ACTIVITY_MESSAGES.NOT_FOUND);
-
       return updatedActivity;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
+      if (error instanceof ForbiddenException) throw error;
       throw new InternalServerErrorException(ACTIVITY_MESSAGES.INTERNAL_SERVER_ERROR);
     }
   }
