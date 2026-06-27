@@ -24,4 +24,5 @@ export const ACTIVITY_MESSAGES = {
 
 export const USER_MESSAGES = {
   PROFILE_UPDATED: 'Profile updated successfully',
+  NOT_FOUND: 'User not found',
 };

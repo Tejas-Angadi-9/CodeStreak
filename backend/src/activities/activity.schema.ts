@@ -12,10 +12,10 @@ export class Activity {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true, enum: Object.values(ActivityStatus) })
+  @Prop({ type: String, required: true, enum: Object.values(ActivityStatus) })
   status: ActivityStatus;
 
-  @Prop({ required: true, enum: Object.values(ActivityType) })
+  @Prop({ type: String, required: true, enum: Object.values(ActivityType) })
   type: ActivityType;
 
   @Prop({ required: true })
