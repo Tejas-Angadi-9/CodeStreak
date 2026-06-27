@@ -5,6 +5,9 @@ export class ActivityDto {
   title: string;
   description: string;
   status: ActivityStatus;
+}
+
+export class CreateActivityDto extends ActivityDto {
   activityDate: string;
 }
 

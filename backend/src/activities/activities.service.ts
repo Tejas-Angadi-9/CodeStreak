@@ -7,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Activity, ActivityDocument } from './activity.schema';
-import { ActivityDto, GetActivitiesDto } from './dto/activities.dto';
+import { ActivityDto, CreateActivityDto, GetActivitiesDto } from './dto/activities.dto';
 import { ACTIVITY_MESSAGES, USER_MESSAGES } from '../common/constants/messages';
 import { User, UserDocument } from 'src/users/user.schema';
 import { MILLISECONDS_PER_DAY } from './constants/activity.constant';
@@ -80,16 +80,19 @@ export class ActivitiesService {
     }
   }
 
-  async createActivity(userId: string, activityDto: ActivityDto): Promise<ActivityDocument> {
+  async createActivity(
+    userId: string,
+    createActivityDto: CreateActivityDto,
+  ): Promise<ActivityDocument> {
     try {
       const existingUser: UserDocument | null = await this.userModel.findById(userId);
       if (!existingUser) {
         throw new NotFoundException(USER_MESSAGES.NOT_FOUND);
       }
 
-      const { activityDate } = activityDto;
+      const { activityDate } = createActivityDto;
       const activity: ActivityDocument = await this.activityModel.create({
-        ...activityDto,
+        ...createActivityDto,
         createdBy: new Types.ObjectId(userId),
         createdAt: new Date().toISOString().split('T')[0],
       });
@@ -106,7 +109,7 @@ export class ActivitiesService {
   async updateActivity(
     userId: string,
     activityId: string,
-    activityDto: ActivityDto,
+    updateActivityDto: ActivityDto,
   ): Promise<ActivityDocument> {
     try {
       const activity: ActivityDocument | null = await this.activityModel.findById(activityId);
@@ -115,13 +118,12 @@ export class ActivitiesService {
       if (activity.createdBy.toString() !== userId)
         throw new ForbiddenException(ACTIVITY_MESSAGES.NOT_AUTHORIZED_TO_MODIFY);
 
-      const { activityDate } = activityDto;
-      const isWithinEditWindow: boolean = this.canEditActivity(activityDate);
+      const isWithinEditWindow: boolean = this.canEditActivity(activity.activityDate);
       if (!isWithinEditWindow) throw new ForbiddenException(ACTIVITY_MESSAGES.EDIT_WINDOW_EXPIRED);
 
       const updatedActivity: ActivityDocument | null = await this.activityModel.findByIdAndUpdate(
         activityId,
-        activityDto,
+        updateActivityDto,
         { new: true },
       );
 
