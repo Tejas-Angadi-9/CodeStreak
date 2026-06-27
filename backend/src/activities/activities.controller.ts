@@ -50,16 +50,4 @@ export class ActivitiesController {
     );
     return updatedActivity;
   }
-
-  @Delete(ROUTES.ACTIVITIES.BY_ID)
-  async deleteActivity(
-    @CurrentUser() user: JwtPayload,
-    @Param('id') activityId: string,
-  ): Promise<MessageResponseDto> {
-    await this.activitiesService.deleteActivity(user.sub, activityId);
-    const deleteActivityResponse: MessageResponseDto = {
-      message: ACTIVITY_MESSAGES.DELETED,
-    };
-    return deleteActivityResponse;
-  }
 }

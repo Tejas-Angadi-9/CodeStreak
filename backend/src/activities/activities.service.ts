@@ -117,19 +117,4 @@ export class ActivitiesService {
       throw new InternalServerErrorException(ACTIVITY_MESSAGES.INTERNAL_SERVER_ERROR);
     }
   }
-
-  async deleteActivity(userId: string, activityId: string): Promise<void> {
-    try {
-      const activity: ActivityDocument | null = await this.activityModel.findById(activityId);
-
-      if (!activity) throw new NotFoundException(ACTIVITY_MESSAGES.NOT_FOUND);
-      if (activity.createdBy.toString() !== userId)
-        throw new ForbiddenException(ACTIVITY_MESSAGES.NOT_AUTHORIZED_TO_MODIFY);
-
-      await this.activityModel.findByIdAndDelete(activityId);
-    } catch (error) {
-      if (error instanceof NotFoundException || error instanceof ForbiddenException) throw error;
-      throw new InternalServerErrorException(ACTIVITY_MESSAGES.INTERNAL_SERVER_ERROR);
-    }
-  }
 }
