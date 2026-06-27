@@ -4,7 +4,7 @@ import JwtGuard from '../common/guards/jwt.guard';
 import CurrentUser from '../common/decorators/current-user.decorator';
 import { JwtPayload } from '../common/interfaces/jwt-payload.interface';
 import { ActivityDocument } from './activity.schema';
-import { ActivityDto, CreateActivityDto, GetActivitiesDto, MessageResponseDto } from './dto/activities.dto';
+import { ActivityDto, GetActivitiesDto, MessageResponseDto } from './dto/activities.dto';
 import { ACTIVITY_MESSAGES } from '../common/constants/messages';
 import { ROUTES } from '../common/constants/routes';
 
@@ -28,7 +28,7 @@ export class ActivitiesController {
   @Post()
   async createActivity(
     @CurrentUser() user: JwtPayload,
-    @Body() body: CreateActivityDto,
+    @Body() body: ActivityDto,
   ): Promise<ActivityDocument> {
     const createdActivity: ActivityDocument = await this.activitiesService.createActivity(
       user.sub,

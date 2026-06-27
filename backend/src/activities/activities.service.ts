@@ -7,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Activity, ActivityDocument } from './activity.schema';
-import { ActivityDto, CreateActivityDto, GetActivitiesDto } from './dto/activities.dto';
+import { ActivityDto, GetActivitiesDto } from './dto/activities.dto';
 import { ACTIVITY_MESSAGES, USER_MESSAGES } from '../common/constants/messages';
 import { User, UserDocument } from 'src/users/user.schema';
 import { MILLISECONDS_PER_DAY } from './constants/activity.constant';
@@ -80,19 +80,18 @@ export class ActivitiesService {
     }
   }
 
-  async createActivity(
-    userId: string,
-    createActivityDto: CreateActivityDto,
-  ): Promise<ActivityDocument> {
+  async createActivity(userId: string, createActivityDto: ActivityDto): Promise<ActivityDocument> {
     try {
       const existingUser: UserDocument | null = await this.userModel.findById(userId);
       if (!existingUser) {
         throw new NotFoundException(USER_MESSAGES.NOT_FOUND);
       }
 
-      const { activityDate } = createActivityDto;
+      const activityDate: string = new Date().toISOString().split('T')[0];
+      console.log('activityDate: ', activityDate);
       const activity: ActivityDocument = await this.activityModel.create({
         ...createActivityDto,
+        activityDate,
         createdBy: new Types.ObjectId(userId),
         createdAt: new Date().toISOString().split('T')[0],
       });

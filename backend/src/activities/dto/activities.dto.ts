@@ -7,10 +7,6 @@ export class ActivityDto {
   status: ActivityStatus;
 }
 
-export class CreateActivityDto extends ActivityDto {
-  activityDate: string;
-}
-
 export class GetActivitiesDto {
   type?: ActivityType;
   page?: number;
