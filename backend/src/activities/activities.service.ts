@@ -19,9 +19,9 @@ export class ActivitiesService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
-  private async updateStreak(activityDate: string, user: UserDocument): Promise<void> {
+  private async updateStreak(createdAt: string, user: UserDocument): Promise<void> {
     const { lastActivityDate, graceExpiresAt } = user;
-    const newActivityTime: number = new Date(activityDate).getTime();
+    const newActivityTime: number = new Date(createdAt).getTime();
     const lastActivityTime: number = new Date(lastActivityDate ?? '').getTime();
 
     const diffDays: number = Math.round(
@@ -43,14 +43,14 @@ export class ActivitiesService {
     }
     user.currentStreak = newStreak;
     user.longestStreak = Math.max(user.longestStreak, user.currentStreak);
-    user.lastActivityDate = activityDate;
+    user.lastActivityDate = createdAt;
     await user.save();
     return;
   }
 
-  private canEditActivity(activityDate: string): boolean {
+  private canEditActivity(createdAt: string): boolean {
     const currentTime: number = new Date().getTime();
-    const activityTime: number = new Date(activityDate).getTime();
+    const activityTime: number = new Date(createdAt).getTime();
 
     const diffDays: number = Math.round(
       Math.abs(currentTime - activityTime) / MILLISECONDS_PER_DAY,
@@ -70,7 +70,7 @@ export class ActivitiesService {
     try {
       const activities: ActivityDocument[] = await this.activityModel
         .find(filter)
-        .sort({ activityDate: -1 })
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit);
 
@@ -87,16 +87,14 @@ export class ActivitiesService {
         throw new NotFoundException(USER_MESSAGES.NOT_FOUND);
       }
 
-      const activityDate: string = new Date().toISOString().split('T')[0];
-      console.log('activityDate: ', activityDate);
+      const createdAt: string = new Date().toISOString().split('T')[0];
       const activity: ActivityDocument = await this.activityModel.create({
         ...createActivityDto,
-        activityDate,
         createdBy: new Types.ObjectId(userId),
-        createdAt: new Date().toISOString().split('T')[0],
+        createdAt,
       });
 
-      await this.updateStreak(activityDate, existingUser);
+      await this.updateStreak(createdAt, existingUser);
 
       return activity;
     } catch (error) {
@@ -117,7 +115,7 @@ export class ActivitiesService {
       if (activity.createdBy.toString() !== userId)
         throw new ForbiddenException(ACTIVITY_MESSAGES.NOT_AUTHORIZED_TO_MODIFY);
 
-      const isWithinEditWindow: boolean = this.canEditActivity(activity.activityDate);
+      const isWithinEditWindow: boolean = this.canEditActivity(activity.createdAt);
       if (!isWithinEditWindow) throw new ForbiddenException(ACTIVITY_MESSAGES.EDIT_WINDOW_EXPIRED);
 
       const updatedActivity: ActivityDocument | null = await this.activityModel.findByIdAndUpdate(

@@ -18,9 +18,6 @@ export class Activity {
   @Prop({ type: String, required: true, enum: Object.values(ActivityType) })
   type: ActivityType;
 
-  @Prop({ required: true })
-  activityDate: string;
-
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   createdBy: Types.ObjectId;
 
@@ -29,4 +26,4 @@ export class Activity {
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
-ActivitySchema.index({ createdBy: 1, activityDate: 1 });
+ActivitySchema.index({ createdBy: 1, createdAt: 1 });
