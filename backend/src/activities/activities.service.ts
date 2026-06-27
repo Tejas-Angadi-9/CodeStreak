@@ -76,13 +76,13 @@ export class ActivitiesService {
       }
 
       const { activityDate } = activityDto;
-      await this.updateStreak(activityDate, existingUser);
-
       const activity: ActivityDocument = await this.activityModel.create({
         ...activityDto,
         createdBy: new Types.ObjectId(userId),
         createdAt: new Date().toISOString().split('T')[0],
       });
+
+      await this.updateStreak(activityDate, existingUser);
 
       return activity;
     } catch (error) {
