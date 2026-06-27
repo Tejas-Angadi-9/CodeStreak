@@ -5,12 +5,6 @@ export enum ActivityType {
   OTHER = 'other',
 }
 
-export enum ActivityDifficulty {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
-
 export enum ActivityStatus {
   COMPLETED = 'completed',
   IN_PROGRESS = 'in-progress',
