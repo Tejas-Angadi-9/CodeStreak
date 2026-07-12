@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { ActivitiesModule } from './activities/activities.module';
+import { SyncModule } from './sync/sync.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ActivitiesModule } from './activities/activities.module';
     UsersModule,
     RoomsModule,
     ActivitiesModule,
+    SyncModule,
   ],
   controllers: [AppController],
   providers: [AppService],
