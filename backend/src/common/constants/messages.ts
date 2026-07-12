@@ -27,3 +27,5 @@ export const USER_MESSAGES = {
   PROFILE_UPDATED: 'Profile updated successfully',
   NOT_FOUND: 'User not found',
 };
+
+export const INTERNAL_SERVER_ERROR = 'Internal server error';
