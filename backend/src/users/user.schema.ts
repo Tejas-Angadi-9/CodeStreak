@@ -26,6 +26,9 @@ export class User {
   @Prop({ type: String, default: null })
   lastActivityDate: string | null;
 
+  @Prop({ type: String, default: null })
+  leetcodeLastSyncTs: string | null;
+
   @Prop({ default: false })
   streakAtRisk: boolean;
 
