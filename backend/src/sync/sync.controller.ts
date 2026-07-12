@@ -4,6 +4,7 @@ import CurrentUser from 'src/common/decorators/current-user.decorator';
 import JwtGuard from 'src/common/guards/jwt.guard';
 import { JwtPayload } from 'src/common/interfaces/jwt-payload.interface';
 import SyncService from './sync.service';
+import { LEETCODE_USER_NAME_QUERY_PARAM } from './constants/sync.constant';
 
 @Controller(ROUTES.SYNC.BASE)
 @UseGuards(JwtGuard)
@@ -13,7 +14,7 @@ class SyncController {
   @Get(ROUTES.SYNC.LEETCODE)
   async syncLeetcodeAcceptedSubmissions(
     @CurrentUser() user: JwtPayload,
-    @Query('leetcodeUserName') leetcodeUserName: string,
+    @Query(LEETCODE_USER_NAME_QUERY_PARAM) leetcodeUserName: string,
   ) {
     console.log('leetcodeUserName: ', leetcodeUserName);
     await this.syncService.syncLeetcodeAcceptedSubmissions(user.sub, leetcodeUserName);
