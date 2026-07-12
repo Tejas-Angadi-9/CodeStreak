@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ActivitiesService } from './activities.service';
 import JwtGuard from '../common/guards/jwt.guard';
 import CurrentUser from '../common/decorators/current-user.decorator';
 import { JwtPayload } from '../common/interfaces/jwt-payload.interface';
 import { ActivityDocument } from './activity.schema';
-import { ActivityDto, GetActivitiesDto, MessageResponseDto } from './dto/activities.dto';
-import { ACTIVITY_MESSAGES } from '../common/constants/messages';
+import { ActivityDto, GetActivitiesDto } from './dto/activities.dto';
 import { ROUTES } from '../common/constants/routes';
 
 @Controller(ROUTES.ACTIVITIES.BASE)

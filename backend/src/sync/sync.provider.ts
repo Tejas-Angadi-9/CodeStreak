@@ -20,7 +20,7 @@ class SyncProvider {
     try {
       const submissions = await this.leetcode.recent_submissions(leetcodeUserName);
       return submissions;
-    } catch (error) {
+    } catch {
       throw new InternalServerErrorException(INTERNAL_SERVER_ERROR);
     }
   }
