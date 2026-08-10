@@ -26,7 +26,7 @@ export class AuthController {
       sameSite: 'lax',
       maxAge: THIRTY_DAYS_MS,
     });
-    const googleLoginResponse = { message: AUTH_MESSAGES.LOGIN_SUCCESS };
+    const googleLoginResponse: GoogleLoginResponseDto = { message: AUTH_MESSAGES.LOGIN_SUCCESS };
     return googleLoginResponse;
   }
 
@@ -40,7 +40,10 @@ export class AuthController {
   @Get(ROUTES.AUTH.VERIFY)
   @UseGuards(JwtGuard)
   verifyToken(@CurrentUser() user: JwtPayload): VerifyTokenResponseDto {
-    const verifyTokenResponse = { message: AUTH_MESSAGES.TOKEN_VALID, user };
+    const verifyTokenResponse: VerifyTokenResponseDto = {
+      message: AUTH_MESSAGES.TOKEN_VALID,
+      user,
+    };
     return verifyTokenResponse;
   }
 }
