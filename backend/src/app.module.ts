@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerModule } from 'nestjs-pino';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import getDatabaseConfig from './config/database.config';
 import loggerConfig from './config/logger.config';
 import { AuthModule } from './auth/auth.module';
@@ -26,7 +24,5 @@ import { SyncModule } from './sync/sync.module';
     ActivitiesModule,
     SyncModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
