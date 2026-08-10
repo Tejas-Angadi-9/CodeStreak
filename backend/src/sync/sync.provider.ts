@@ -1,15 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import LeetCode from 'leetcode-query';
 import { INTERNAL_SERVER_ERROR } from 'src/common/constants/messages';
-
-// TODO: Move this interface outside from this file to correct interface file
-interface IFetchAccpetedLeetcodeSubmissionsResponse {
-  lang: string;
-  statusDisplay: string;
-  timestamp: string;
-  title: string;
-  titleSlug: string;
-}
+import { IFetchAccpetedLeetcodeSubmissionsResponse } from './interfaces/sync.interface';
 
 @Injectable()
 class SyncProvider {
