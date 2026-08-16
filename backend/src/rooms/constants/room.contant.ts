@@ -3,3 +3,4 @@ export const ROOM_CODE_LENGTH = 4;
 export const ROOM_CODE_PREFIX = 'CS';
 export const MONGO_DUPLICATE_KEY_ERROR = 11000;
 export const MAX_RETRIES = 5;
+export const ROOM_CODE_PATTERN = new RegExp(`^${ROOM_CODE_PREFIX}-[A-Z0-9]{${ROOM_CODE_LENGTH}}$`);
