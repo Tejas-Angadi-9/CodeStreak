@@ -13,9 +13,8 @@ import {
   ROOM_CODE_CHARS,
   ROOM_CODE_LENGTH,
   ROOM_CODE_PREFIX,
-  MONGO_DUPLICATE_KEY_ERROR,
-  MAX_RETRIES,
-} from './constants/room.contant';
+} from '../common/constants/room.constant';
+import { MONGO_DUPLICATE_KEY_ERROR, MAX_RETRIES } from './constants/room.contant';
 import { MongoServerError } from 'mongodb';
 
 @Injectable()

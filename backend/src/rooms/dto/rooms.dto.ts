@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
-import { ROOM_CODE_PATTERN } from '../constants/room.contant';
+import { ROOM_CODE_PATTERN } from '../../common/constants/room.constant';
 
 export class MessageResponseDto {
   @IsString()
