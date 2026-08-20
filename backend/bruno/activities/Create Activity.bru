@@ -1,0 +1,20 @@
+meta {
+  name: Create Activity
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/activities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "type": "problem",
+    "title": "",
+    "description": "",
+    "status": "completed"
+  }
+}

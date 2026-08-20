@@ -1,0 +1,24 @@
+meta {
+  name: Update Activity
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/activities/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id:
+}
+
+body:json {
+  {
+    "type": "problem",
+    "title": "",
+    "description": "",
+    "status": "completed"
+  }
+}
