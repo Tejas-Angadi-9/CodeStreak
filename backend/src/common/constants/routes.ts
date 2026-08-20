@@ -21,6 +21,7 @@ export const ROUTES = {
   },
   DASHBOARD: {
     BASE: 'dashboard',
+    BY_ROOM_CODE: ':roomCode',
   },
   SYNC: {
     BASE: 'sync',
