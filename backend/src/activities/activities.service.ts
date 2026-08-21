@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { getTodaysDate } from 'src/common/utils/date.util';
 import { Activity, ActivityDocument } from './activity.schema';
 import { ActivityDto, GetActivitiesDto } from './dto/activities.dto';
 import { ACTIVITY_MESSAGES, USER_MESSAGES } from '../common/constants/messages';
@@ -87,7 +88,7 @@ export class ActivitiesService {
         throw new NotFoundException(USER_MESSAGES.NOT_FOUND);
       }
 
-      const createdAt: string = new Date().toISOString().split('T')[0];
+      const createdAt: string = getTodaysDate();
       const activity: ActivityDocument = await this.activityModel.create({
         ...createActivityDto,
         createdBy: new Types.ObjectId(userId),
