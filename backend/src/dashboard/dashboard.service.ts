@@ -4,7 +4,7 @@ import { compact, filter, find, get, isNil, isNull, pick } from 'lodash';
 import { Model, Types } from 'mongoose';
 import { PinoLogger } from 'nestjs-pino';
 import { Activity, ActivityDocument } from 'src/activities/activity.schema';
-import { getTodaysDate } from 'src/common/utils/date.util';
+import { getTodaysDate, getWeekDates } from 'src/common/utils/date.util';
 import { Room, RoomDocument } from 'src/rooms/room.schema';
 import { User, UserDocument } from 'src/users/user.schema';
 import { IResolveMembers } from './interfaces/dashboard.interface';
@@ -30,26 +30,46 @@ class DashboardService {
     return { currentUser, otherUser };
   }
 
-  private fetchTodaysActivities(userIds: Types.ObjectId[]): Promise<ActivityDocument[]> {
-    return this.activityModel.find({ createdBy: { $in: userIds }, createdAt: getTodaysDate() });
+  private fetchWeeksActivities(
+    userIds: Types.ObjectId[],
+    weekDates: string[],
+  ): Promise<ActivityDocument[]> {
+    return this.activityModel.find({ createdBy: { $in: userIds }, createdAt: { $in: weekDates } });
+  }
+
+  private buildHeatmap(
+    weekActivities: ActivityDocument[],
+    userId: Types.ObjectId,
+    weekDates: string[],
+  ): { date: string; isActive: boolean }[] {
+    return weekDates.map((date) => ({
+      date,
+      isActive: weekActivities.some(
+        (activity) => String(activity.createdBy) === String(userId) && activity.createdAt === date,
+      ),
+    }));
   }
 
   private buildUserSummary(
     users: UserDocument[],
     userId: Types.ObjectId,
-    todaysActivities: ActivityDocument[],
+    weekActivities: ActivityDocument[],
+    weekDates: string[],
   ) {
     const foundUser = find(users, (user) => String(user._id) === String(userId));
     if (isNil(foundUser)) return null;
 
     const summaryFields = ['name', 'currentStreak', 'longestStreak'] as const;
 
-    const activities = filter(
-      todaysActivities,
-      (activity) => String(activity.createdBy) === String(userId),
+    const today = getTodaysDate();
+    const todaysActivities = filter(
+      weekActivities,
+      (activity) => String(activity.createdBy) === String(userId) && activity.createdAt === today,
     );
 
-    return { ...pick(foundUser, summaryFields), activities };
+    const heatmap = this.buildHeatmap(weekActivities, userId, weekDates);
+
+    return { ...pick(foundUser, summaryFields), todaysActivities, heatmap };
   }
 
   public async fetchDashboardDetails(userId: string, roomCode: string) {
@@ -59,14 +79,20 @@ class DashboardService {
       const userIds: Types.ObjectId[] = compact([currentUser, otherUser]);
       const users = await this.userModel.find({ _id: { $in: userIds } });
 
-      const todaysActivities = await this.fetchTodaysActivities(userIds);
+      const weekDates = getWeekDates();
+      const weekActivities = await this.fetchWeeksActivities(userIds, weekDates);
 
-      const currentUserDetails = this.buildUserSummary(users, currentUser, todaysActivities);
+      const currentUserDetails = this.buildUserSummary(
+        users,
+        currentUser,
+        weekActivities,
+        weekDates,
+      );
       if (isNil(currentUserDetails)) throw new NotFoundException('User not found');
 
       const otherUserDetails = isNil(otherUser)
         ? null
-        : this.buildUserSummary(users, otherUser, todaysActivities);
+        : this.buildUserSummary(users, otherUser, weekActivities, weekDates);
 
       return { roomCode, currentUserDetails, otherUserDetails };
     } catch (error) {
