@@ -7,14 +7,18 @@ import { User, UserDocument } from './user.schema';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async getProfile(userId: string): Promise<UserDocument> {
+  async getProfile(userId: string): Promise<Omit<User, 'googleId'>> {
     try {
-      const user: UserDocument | null = await this.userModel.findById(userId);
+      const user = await this.userModel.findById(userId).select('-googleId').lean();
       if (!user) throw new NotFoundException('User not found');
+
       return user;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException('Failed to fetch user profile: ', error as Error);
+      throw new InternalServerErrorException(
+        'Failed to fetch user profile',
+        (error as Error).message,
+      );
     }
   }
 
