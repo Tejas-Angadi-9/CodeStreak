@@ -1,6 +1,5 @@
 # .github/labeler.yml
-# put this file on the default branch (e.g., main) or in the PR branch
-# maps path globs to labels
+# maps path globs to labels for actions/labeler@v5
 frontend:
   - 'src/frontend/**'
 backend:
