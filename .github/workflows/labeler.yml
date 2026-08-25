@@ -9,9 +9,16 @@ jobs:
   label:
     runs-on: ubuntu-latest
 
+    # Ensure permissions allow labeling (if repo default permissions are restrictive)
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run labeler
         uses: actions/labeler@v5
