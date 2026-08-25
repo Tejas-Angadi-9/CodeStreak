@@ -1,7 +1,9 @@
-backend:
-  - changed-files:
-      - any-glob-to-any-file: "backend/**/*"
-
+# .github/labeler.yml
+# put this file on the default branch (e.g., main) or in the PR branch
+# maps path globs to labels
 frontend:
-  - changed-files:
-      - any-glob-to-any-file: "frontend/**/*"
+  - 'src/frontend/**'
+backend:
+  - 'src/backend/**'
+documentation:
+  - 'docs/**'
