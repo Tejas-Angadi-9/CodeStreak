@@ -1,5 +1,6 @@
 # .github/workflows/labeler.yml
 name: PR Auto Labeler
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -7,6 +8,7 @@ on:
 jobs:
   label:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
