@@ -1,7 +1,7 @@
 backend:
   - changed-files:
-      - any-glob-to-any-file: "Backend/**/*"
+      - "Backend/**/*"
 
 frontend:
   - changed-files:
-      - any-glob-to-any-file: "Frontend/**/*"
+      - "Frontend/**/*"
