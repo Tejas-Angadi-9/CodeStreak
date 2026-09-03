@@ -1,9 +1,18 @@
 # .github/labeler.yml
-# put this file on the default branch (e.g., main) or in the PR branch
-# maps path globs to labels
+# maps path globs to labels for actions/labeler@v5
 frontend:
-  - 'src/frontend/**'
+  - changed-files:
+      - any-glob-to-any-file: 'src/frontend/**'
 backend:
-  - 'src/backend/**'
+  - changed-files:
+      - any-glob-to-any-file: 'src/backend/**'
 documentation:
-  - 'docs/**'
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
+configuration:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+      - any-glob-to-any-file: '*.yml'
+      - any-glob-to-any-file: '*.yaml'
+      - any-glob-to-any-file: 'package.json'
+      - any-glob-to-any-file: 'tsconfig.json'
