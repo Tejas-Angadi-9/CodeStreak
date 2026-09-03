@@ -1,12 +1,18 @@
 # .github/labeler.yml
 # maps path globs to labels for actions/labeler@v5
 frontend:
-  - 'src/frontend/**'
+  - changed-files:
+      - any-glob-to-any-file: 'src/frontend/**'
 backend:
-  - 'src/backend/**'
+  - changed-files:
+      - any-glob-to-any-file: 'src/backend/**'
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
 configuration:
-  - '.github/**'
-  - '*.yml'
-  - '*.yaml'
-  - 'package.json'
-  - 'tsconfig.json'
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+      - any-glob-to-any-file: '*.yml'
+      - any-glob-to-any-file: '*.yaml'
+      - any-glob-to-any-file: 'package.json'
+      - any-glob-to-any-file: 'tsconfig.json'
