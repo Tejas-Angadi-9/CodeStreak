@@ -1,8 +1,8 @@
 # .github/labeler.yml
 # maps path globs to labels for actions/labeler@v5
 frontend:
-  - 'src/frontend/**'
+  - modified-globs: 'src/frontend/**'
 backend:
-  - 'src/backend/**'
+  - modified-globs: 'src/backend/**'
 documentation:
   - 'docs/**'
