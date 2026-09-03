@@ -4,5 +4,3 @@ frontend:
   - modified-globs: 'src/frontend/**'
 backend:
   - modified-globs: 'src/backend/**'
-documentation:
-  - 'docs/**'
