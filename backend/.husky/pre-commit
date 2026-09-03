@@ -1,0 +1,1 @@
+cd backend && FORCE_COLOR=1 npm run lint

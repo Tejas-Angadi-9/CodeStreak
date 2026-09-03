@@ -1,0 +1,17 @@
+meta {
+  name: List Activities
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/activities?type=problem&page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  type: problem
+  page: 1
+  limit: 10
+}

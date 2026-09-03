@@ -1,0 +1,1 @@
+export const MILLISECONDS_PER_DAY = 864e5;
