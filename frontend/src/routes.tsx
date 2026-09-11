@@ -62,7 +62,7 @@ const router = createBrowserRouter([
 
 const AppRoutes = () => {
   return (
-    <div className="bg-base h-screen">
+    <div className="bg-base h-screen flex items-center justify-center ">
       <RouterProvider router={router} />
     </div>
   );
