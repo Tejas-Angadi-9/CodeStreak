@@ -3,7 +3,7 @@ import { welcomeFeaturesList } from "./constants/welcome.constant";
 
 const Welcome = () => {
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen text-white px-6 py-22 max-w-sm mx-auto font-sans selection:bg-orange-500/30">
+    <div className="flex flex-col items-center justify-between min-h-screen text-white px-6 pb-8 max-w-sm mx-auto font-sans selection:bg-orange-500/30 ">
       <div className="flex flex-col items-center text-center mt-12 w-full relative">
         <div className="absolute top-12 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-orange-600/20 rounded-full blur-[80px] pointer-events-none z-0" />
 
@@ -13,7 +13,7 @@ const Welcome = () => {
           </span>
         </div>
 
-        <h1 className="relative z-10 text-4xl font-bold tracking-tight text-white mb-6">
+        <h1 className="relative z-10 text-4xl font-bold tracking-tight text-white mb-5">
           Codestreak
         </h1>
 
