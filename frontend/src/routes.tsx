@@ -1,36 +1,67 @@
-import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Activity from "./pages/activity/Activity";
-import Room from "./pages/room/Room";
-import Profile from "./pages/profile/Profile";
-import Welcome from "./pages/welcome/Welcome";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Spinner from "./common/components/Spinner/Spinner";
+
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Activity = lazy(() => import("./pages/activity/Activity"));
+const Room = lazy(() => import("./pages/room/Room"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const Welcome = lazy(() => import("./pages/welcome/Welcome"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Dashboard />
+      </Suspense>
+    ),
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Dashboard />
+      </Suspense>
+    ),
   },
   {
     path: "/activity",
-    element: <Activity />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Activity />
+      </Suspense>
+    ),
   },
   {
     path: "/room",
-    element: <Room />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Room />
+      </Suspense>
+    ),
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Profile />
+      </Suspense>
+    ),
   },
   {
     path: "/welcome",
-    element: <Welcome />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Welcome />
+      </Suspense>
+    ),
   },
   { path: "*", element: <div>Not Found</div> },
 ]);
 
-export default router;
+const AppRoutes = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default AppRoutes;
