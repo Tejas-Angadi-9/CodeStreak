@@ -61,7 +61,11 @@ const router = createBrowserRouter([
 ]);
 
 const AppRoutes = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <div className="bg-base h-screen">
+      <RouterProvider router={router} />
+    </div>
+  );
 };
 
 export default AppRoutes;
