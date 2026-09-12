@@ -15,13 +15,16 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const configService = app.get(ConfigService);
+
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: configService.getOrThrow('REACT_BASE_URL'),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-  const configService = app.get(ConfigService);
+
   const PORT: number = configService.get('PORT') ?? 3001;
   app.setGlobalPrefix('/api/v1');
   const logger = app.get(Logger);
