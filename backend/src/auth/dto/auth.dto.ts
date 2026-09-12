@@ -5,7 +5,7 @@ import { JwtPayload } from '../../common/interfaces/jwt-payload.interface';
 export class GoogleLoginDto {
   @IsString()
   @IsNotEmpty()
-  idToken: string;
+  accessCode: string;
 }
 
 export class GoogleLoginResponseDto {
