@@ -21,7 +21,7 @@ const useGoogleAuth = () => {
     },
     onSuccess: (data) => {
       console.log("Login success response: ", data);
-      navigate("/");
+      navigate("/room");
     },
     onError: (error) => {
       console.error("Login endpoint failed: ", error.message);
