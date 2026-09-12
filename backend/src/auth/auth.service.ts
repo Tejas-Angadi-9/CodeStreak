@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import { OAuth2Client } from 'google-auth-library';
 import { User, UserDocument } from '../users/user.schema';
+import { isNil } from 'lodash';
 
 @Injectable()
 export class AuthService {
@@ -15,11 +16,22 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {
-    this.googleClient = new OAuth2Client(this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID'));
+    this.googleClient = new OAuth2Client({
+      clientId: this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
+      clientSecret: this.configService.getOrThrow<string>('GOOGLE_SECRET_ID'),
+      redirectUri: 'postmessage',
+    });
   }
 
-  async googleLogin(idToken: string): Promise<string> {
+  async googleLogin(accessCode: string): Promise<string> {
     try {
+      const { tokens } = await this.googleClient.getToken(accessCode);
+      const idToken = tokens.id_token;
+
+      if (isNil(idToken)) {
+        throw new UnauthorizedException('Failed to retrieve ID token from Google');
+      }
+
       const ticket = await this.googleClient.verifyIdToken({
         idToken,
         audience: this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
@@ -44,13 +56,13 @@ export class AuthService {
       );
 
       const token: string = this.jwtService.sign({
-        sub: user._id,
+        sub: user._id.toString(),
         email: user.email,
       });
       return token;
     } catch (error) {
-      console.error({ error, message: 'Google login failed' });
-      throw new UnauthorizedException('Google login failed');
+      if (error instanceof UnauthorizedException) throw error;
+      throw new InternalServerErrorException('Google login failed');
     }
   }
 }

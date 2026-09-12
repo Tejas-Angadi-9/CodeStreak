@@ -19,7 +19,7 @@ export class AuthController {
     @Body() body: GoogleLoginDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<GoogleLoginResponseDto> {
-    const token: string = await this.authService.googleLogin(body.idToken);
+    const token: string = await this.authService.googleLogin(body.accessCode);
     res.cookie(AUTH_TOKEN, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === PRODUCTION,
