@@ -5,3 +5,7 @@ export interface IWelcomeFeatureList {
   icon: JSX.Element;
   title: string;
 }
+
+export interface IWelcomeLoginResponse {
+  message: string;
+}
