@@ -1,7 +1,10 @@
 import { FaGoogle } from "react-icons/fa";
-import { welcomeFeaturesList } from "./constants/welcome.constant";
+import { welcomeFeaturesList } from "./constants/welcomeFeaturesLIst.constant";
+import useGoogleAuth from "./hooks/useGoogleAuth";
 
 const Welcome = () => {
+  const { login, isLoading } = useGoogleAuth();
+
   return (
     <div className="flex flex-col items-center justify-between min-h-screen text-white px-6 pb-8 max-w-sm mx-auto font-sans selection:bg-orange-500/30 ">
       <div className="flex flex-col items-center text-center mt-12 w-full relative">
@@ -43,10 +46,13 @@ const Welcome = () => {
       </div>
 
       <div className="w-full mt-auto pt-8">
-        <button className="w-full bg-white hover:bg-neutral-100 text-black font-bold py-[18px] px-6 rounded-full flex items-center justify-center gap-3 transition-all duration-200 shadow-lg active:scale-[0.99] cursor-pointer">
+        <button
+          className="w-full bg-white hover:bg-neutral-100 text-black font-bold py-[18px] px-6 rounded-full flex items-center justify-center gap-3 transition-all duration-200 shadow-lg active:scale-[0.99] cursor-pointer"
+          onClick={() => login()}
+          disabled={isLoading}>
           <FaGoogle className="text-lg" />
           <span className="text-[15px] tracking-wide font-semibold">
-            Continue with Google
+            {isLoading ? "Signing in..." : "Sign in with Google"}
           </span>
         </button>
       </div>
