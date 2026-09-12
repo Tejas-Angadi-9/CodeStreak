@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { OAuth2Client } from 'google-auth-library';
 import { User, UserDocument } from '../users/user.schema';
 import { isNil } from 'lodash';
+import { PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly logger: PinoLogger,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {
@@ -29,6 +31,7 @@ export class AuthService {
       const idToken = tokens.id_token;
 
       if (isNil(idToken)) {
+        this.logger.error('Failed to retrieve ID token from Google');
         throw new UnauthorizedException('Failed to retrieve ID token from Google');
       }
 
@@ -59,9 +62,16 @@ export class AuthService {
         sub: user._id.toString(),
         email: user.email,
       });
+
+      this.logger.info('User signed in successfully');
       return token;
     } catch (error) {
-      if (error instanceof UnauthorizedException) throw error;
+      if (error instanceof UnauthorizedException) {
+        this.logger.error('Failed to retrieve ID token from Google', error);
+        throw error;
+      }
+
+      this.logger.error('Google login failed', error);
       throw new InternalServerErrorException('Google login failed');
     }
   }
