@@ -8,10 +8,29 @@
   name: "mytheme";
   default: true;
 
-  --color-primary: #f5a224;
-  --color-secondary: #ec4899;
+  --color-primary: #e05616;
+  --color-secondary: #1551db;
   --color-accent: #10b981;
 
   --color-base-100: #121111;
   --color-base-content: #ffffff;
+}
+
+@theme {
+  /* Create Room Card Theme Tokens */
+  --color-create-card-start: #25160d;
+  --color-create-card-end: #140f0c;
+  --color-create-card-border: #362115;
+  --color-create-icon-start: #e05616;
+  --color-create-icon-end: #ff7a3c;
+
+  /* Join Room Icon Theme Tokens */
+  --color-join-icon-start: #1551db;
+  --color-join-icon-end: #2e60d6;
+
+  /* Join Room Card Theme Tokens */
+  --color-join-card-start: #0f1422;
+  --color-join-card-end: #0a0d16;
+  --color-join-card-border: #18223b;
+  --color-join-form-border: #222836;
 }
